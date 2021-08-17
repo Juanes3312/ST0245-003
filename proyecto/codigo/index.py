@@ -12,7 +12,7 @@ def bajarEnfermo():
         urllib.request.urlretrieve(i["download_url"], i["name"])
         a += 1
 
-#solo llamar si no se tiene descargado 
+#solo llamar si no se tiene descargado.
 def bajarSano():
     a = 0
     response = requests.get('https://api.github.com/repos/mauriciotoro/ST0245-Eafit/contents/proyecto/datasets/csv/sano_csv')
