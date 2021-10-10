@@ -6,10 +6,10 @@ import requests
 #solo llamar si no se tiene descargado 
 def bajarEnfermo():
     a = 0
-    response = requests.get('https://api.github.com/repos/mauriciotoro/ST0245-Eafit/contents/proyecto/datasets/csv/enfermo_csv')
+    response = requests.get('https://api.github.com/repos/mauriciotoro/ST0245-Eafit/contents/proyecto/datasets/imagenes/color/enfermo')
     repos = response.json()
     for i in repos:
-        ruta_destino = os.path.join("./../enfermos", i["name"])
+        ruta_destino = os.path.join("./imagenes_enfermos", i["name"])
         urllib.request.urlretrieve(i["download_url"], ruta_destino)
         a += 1
 
@@ -46,12 +46,27 @@ def convertirEnMatriz():
             listaSuprema.append(nombre)
 
 
-direccion = "./../enfermos"
+direccion = "./enfermos"
 archivosEnfermo = os.listdir(direccion)
 
-direccion = "./../sanos"
+direccion = "./sanos"
 archivosSano = os.listdir(direccion)
 
+def comprimir(nombre:str):
+    img = cv2.imread(nombre)
+
+    scale_percent = 0.15
+    width = int(img.shape[1]*scale_percent)
+    heigth = int(img.shape[0]*scale_percent)
+    dimension=(width,heigth)
+
+    resized=cv2.resize(img,dimension,interpolation=cv2.INTERAREA)
+
+    print(resized.shape)
+    cv2.imwrite('rezised'+nombre,resized)
+
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
 
 
 for file in archivosEnfermo:
@@ -61,10 +76,10 @@ for file in archivosSano:
     listaSano.append(file)
 
 def __main__():
-    convertirEnMatriz()
-    #bajarEnfermo()
+    #convertirEnMatriz()
+    bajarEnfermo()
     #print(listaEnfermos)
    # print(listaSano)
-    print(listaSuprema)
+    #print(listaSuprema)
 __main__()
 
