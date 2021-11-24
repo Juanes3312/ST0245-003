@@ -1,8 +1,12 @@
 /proyecto/codigo/enfermos
 /proyecto/codigo/sanos
 /proyecto/codigo/imagenes_enfermos
+/proyecto/codigo/imagenes_sanos
 /proyecto/codigo/imagenes_comprimidos_enfermos
 /enfermos
 /sanos
 /comprimido_enfermos
 /comprimido_sano
+prueba.py 
+prueba1.py
+main.py

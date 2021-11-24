@@ -1,6 +1,12 @@
 #el metodo comprimir  solo funciona si esta dentro de la carpeta de archivos se solucionara mas adelante
 import requests
 import urllib.request
+from huffman import HuffmanCoding
+from numpy import genfromtxt 
+from matplotlib import pyplot as plt
+from PIL import Image
+import seam_carving
+import numpy
 import json
 import os
 import sys
@@ -29,14 +35,102 @@ def bajarSano():
 
 
 
-direccionEnfermo = "Direccion de la carpeta enfermos"
-archivosEnfermo = os.listdir(direccionEnfermo)
 
-direccionSano = "Direccion de la carpeta sanos"
-archivosSano = os.listdir(direccionSano)
+def comprimirYdescomprimirConPerdidasYsinPerdidas():
+    f = r"C:\Users\juane\Documents\Proyectos Datos y algoritmos\proyecto\codigo\enfermos\©-PETA-5 (1).csv"#sano 11000kb
+    #f = r"C:\Users\juane\Documents\Proyectos Datos y algoritmos\proyecto\codigo\enfermos\0.csv"#500kb
+    #f = "3000.csv"#3000kb
+    #f = "5000.csv" #5000kb
+    #f = "Aphis.csv"#10000kb
+    print(type(f))
+    f = genfromtxt(f, delimiter = ",") 
+    print(f.shape)
+    f_h, f_w= f.shape
+    dst = seam_carving.resize(
+        f, (f_w - 100, f_h-100),
+        energy_mode='forward',   # Choose from {backward, forward}
+        order='width-first',  # Choose from {width-first, height-first}
+        keep_mask=None
+    )
+
+    imgplot = plt.imshow(f, cmap = "gray") 
+    plt.show()
+
+    imgplot = plt.imshow(dst, cmap = "gray") 
+    plt.show()
+    dst = numpy.array(dst)
+    numpy.savetxt(r"C:\Users\juane\Documents\Proyectos Datos y algoritmos\proyecto\codigo\comprimidoT.csv", dst, delimiter = ",")
+    #dst.tofile(r"C:\Users\juane\Documents\Proyectos Datos y algoritmos\proyecto\codigo\comprimidoT.csv", sep=",")
+    path = "comprimidoT.csv"
+    h = HuffmanCoding(path)
+
+    output_path = h.compress()
+    print("Compressed file path: " + output_path)
+
+    decom_path = h.decompress(output_path)
+    print("Decompressed file path: " + decom_path)
+
+    f2 = "comprimidoT_decompressed.csv" 
+    print(type(f2))
+
+    f2 = genfromtxt(f2, delimiter = ",") 
+    print(f2.shape)
+    f2_h, f2_w= f2.shape
+    dst2 = seam_carving.resize(
+        f2, (f2_w + 100, f2_h+100),
+        energy_mode='forward',   # Choose from {backward, forward}
+        order='width-first',  # Choose from {width-first, height-first}
+        keep_mask=None
+    )
+    imgplot = plt.imshow(dst2, cmap = "gray") 
+    plt.show()
+
+def comprimirYdescomprimirEnfermoSinPerdidas():
+    path = "sano.csv"
+    h = HuffmanCoding(path)
+
+    output_path = h.compress()
+    print("Compressed file path: " + output_path)
+
+    decom_path = h.decompress(output_path)
+    print("Decompressed file path: " + decom_path)
+
+    f = genfromtxt(decom_path, delimiter = ",")
+    imgplot = plt.imshow(f, cmap = "gray") 
+    plt.show()
+    
+
+def comprimirEnfermoCsvConPerdidas():  
+    f = "3-s2.csv" 
+
+    f = genfromtxt(f, delimiter = ",") 
+
+    f_h, f_w= f.shape
+    dst = seam_carving.resize(
+    f, (f_w - 150, f_h - 100),
+    energy_mode='forward',   # Choose from {backward, forward}
+    order='width-first',  # Choose from {width-first, height-first}
+    keep_mask=None
+    )
+
+    imgplot = plt.imshow(f, cmap = "gray") 
+    plt.show()
+
+    imgplot = plt.imshow(dst, cmap = "gray") 
+    plt.show()
+
+    dst = seam_carving.resize(
+    f, (f_w + 100, f_h + 100),
+    energy_mode='forward',   # Choose from {backward, forward}
+    order='width-first',  # Choose from {width-first, height-first}
+    keep_mask=None
+    )
+    imgplot = plt.imshow(dst, cmap = "gray") 
+    plt.show()
 
 
-def comprimirEnfermo(archivos):
+
+def comprimirEnfermoImagen(archivos):
     contador = 0
     for line in archivos:
         if line.endswith('.webp'):
@@ -80,31 +174,21 @@ def comprimirSano(archivos):
             cv2.waitKey(0)
             cv2.destroyAllWindows()
 
+#direccionEnfermo = "Direccion de la carpeta enfermos"
+#archivosEnfermo = os.listdir(direccionEnfermo)
 
-
-listaEnfermos = []
-listaSano = []
-for file in archivosEnfermo:
-    listaEnfermos.append(file)
-for file in archivosSano:
-
-    listaSano.append(file)
-
-
-
-
-
+#direccionSano = "Direccion de la carpeta sanos"
+#archivosSano = os.listdir(direccionSano)
 
 
 def __main__():
     #bajarEnfermo()
     #bajarSano()
-    #print(listaEnfermos)
-    #print(listaSano)
-    comprimirEnfermo(direccionEnfermo)
-    comprimirSano(direccionSano)
-
-
+    #comprimirEnfermoImagen(direccionEnfermo)
+    #comprimirSano(direccionSano)
+    #comprimirEnfermoCsvConPerdidas()
+    #comprimirYdescomprimirEnfermoSinPerdidas()
+    comprimirYdescomprimirConPerdidasYsinPerdidas()
 __main__()
 
 
