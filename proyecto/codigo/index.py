@@ -37,19 +37,15 @@ def bajarSano():
 
 
 def comprimirYdescomprimirConPerdidasYsinPerdidas():
-    f = r"C:\Users\juane\Documents\Proyectos Datos y algoritmos\proyecto\codigo\enfermos\©-PETA-5 (1).csv"#sano 11000kb
-    #f = r"C:\Users\juane\Documents\Proyectos Datos y algoritmos\proyecto\codigo\enfermos\0.csv"#500kb
-    #f = "3000.csv"#3000kb
-    #f = "5000.csv" #5000kb
-    #f = "Aphis.csv"#10000kb
+    f = r"Ponga la ruta del archivo aqui"
     print(type(f))
     f = genfromtxt(f, delimiter = ",") 
     print(f.shape)
     f_h, f_w= f.shape
     dst = seam_carving.resize(
         f, (f_w - 100, f_h-100),
-        energy_mode='forward',   # Choose from {backward, forward}
-        order='width-first',  # Choose from {width-first, height-first}
+        energy_mode='forward',   
+        order='width-first', 
         keep_mask=None
     )
 
@@ -59,7 +55,7 @@ def comprimirYdescomprimirConPerdidasYsinPerdidas():
     imgplot = plt.imshow(dst, cmap = "gray") 
     plt.show()
     dst = numpy.array(dst)
-    numpy.savetxt(r"C:\Users\juane\Documents\Proyectos Datos y algoritmos\proyecto\codigo\comprimidoT.csv", dst, delimiter = ",")
+    numpy.savetxt(r"ponga la ruta con el nombre de archivo alfinal", dst, delimiter = ",")
     #dst.tofile(r"C:\Users\juane\Documents\Proyectos Datos y algoritmos\proyecto\codigo\comprimidoT.csv", sep=",")
     path = "comprimidoT.csv"
     h = HuffmanCoding(path)
@@ -86,7 +82,7 @@ def comprimirYdescomprimirConPerdidasYsinPerdidas():
     plt.show()
 
 def comprimirYdescomprimirEnfermoSinPerdidas():
-    path = "sano.csv"
+    path = r"ponga la ruta del archivo aqui"
     h = HuffmanCoding(path)
 
     output_path = h.compress()
@@ -101,7 +97,7 @@ def comprimirYdescomprimirEnfermoSinPerdidas():
     
 
 def comprimirEnfermoCsvConPerdidas():  
-    f = "3-s2.csv" 
+    f = "ponga la ruta del archivo aqui" 
 
     f = genfromtxt(f, delimiter = ",") 
 
